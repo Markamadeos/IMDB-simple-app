@@ -1,4 +1,6 @@
-package com.example.imdbsearch.model
+package com.example.imdbsearch
+
+import com.example.imdbsearch.Movie
 
 class MoviesResponse(
     val searchType: String,

@@ -1,17 +1,15 @@
 package com.example.imdbsearch
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.imdbsearch.api.IMDbApi
-import com.example.imdbsearch.model.Movie
-import com.example.imdbsearch.model.MoviesResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     private val movies = ArrayList<Movie>()
 
-    private val adapter = MovieAdapter()
+    private val adapter = MovieAdapter() { onMovieClick(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,8 +53,9 @@ class MainActivity : AppCompatActivity() {
             if (queryInput.text.isNotEmpty()) {
                 imdbService.getMovie(queryInput.text.toString()).enqueue(object :
                     Callback<MoviesResponse> {
-                    override fun onResponse(call: Call<MoviesResponse>,
-                                            response: Response<MoviesResponse>
+                    override fun onResponse(
+                        call: Call<MoviesResponse>,
+                        response: Response<MoviesResponse>
                     ) {
                         if (response.code() == 200) {
                             movies.clear()
@@ -70,7 +69,10 @@ class MainActivity : AppCompatActivity() {
                                 showMessage("", "")
                             }
                         } else {
-                            showMessage(getString(R.string.something_went_wrong), response.code().toString())
+                            showMessage(
+                                getString(R.string.something_went_wrong),
+                                response.code().toString()
+                            )
                         }
                     }
 
@@ -96,6 +98,12 @@ class MainActivity : AppCompatActivity() {
         } else {
             placeholderMessage.visibility = View.GONE
         }
+    }
+
+    fun onMovieClick(movie: Movie) {
+        val intent = Intent(this, PosterActivity::class.java)
+            .putExtra("MOVIE_POSTER", movie.image)
+        startActivity(intent)
     }
 
 }

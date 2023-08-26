@@ -2,9 +2,9 @@ package com.example.imdbsearch
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.imdbsearch.model.Movie
 
-class MovieAdapter() : RecyclerView.Adapter<MovieViewHolder>() {
+class MovieAdapter(private val clickListener: MovieClickListener) :
+    RecyclerView.Adapter<MovieViewHolder>() {
 
     var movies = ArrayList<Movie>()
 
@@ -13,8 +13,13 @@ class MovieAdapter() : RecyclerView.Adapter<MovieViewHolder>() {
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.bind(movies.get(position))
+        holder.itemView.setOnClickListener { clickListener.onMovieClick(movies.get(position)) }
     }
 
     override fun getItemCount() = movies.size
+
+    fun interface MovieClickListener {
+        fun onMovieClick(movie: Movie)
+    }
 }
 

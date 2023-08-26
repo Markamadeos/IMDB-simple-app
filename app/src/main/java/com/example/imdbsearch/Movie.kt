@@ -1,4 +1,4 @@
-package com.example.imdbsearch.model
+package com.example.imdbsearch
 
 data class Movie(
     val id: String,

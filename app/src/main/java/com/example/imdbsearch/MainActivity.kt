@@ -3,13 +3,10 @@ package com.example.imdbsearch
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.imdbsearch.databinding.ActivityMainBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,32 +23,30 @@ class MainActivity : AppCompatActivity() {
 
     private val imdbService = retrofit.create(IMDbApi::class.java)
 
-    private lateinit var searchButton: Button
-    private lateinit var queryInput: EditText
-    private lateinit var placeholderMessage: TextView
-    private lateinit var moviesList: RecyclerView
-
     private val movies = ArrayList<Movie>()
 
     private val adapter = MovieAdapter() { onMovieClick(it) }
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        placeholderMessage = findViewById(R.id.placeholderMessage)
-        searchButton = findViewById(R.id.searchButton)
-        queryInput = findViewById(R.id.queryInput)
-        moviesList = findViewById(R.id.locations)
+        binding = ActivityMainBinding.inflate(layoutInflater).also {
+            setContentView(it.root)
+        }
 
         adapter.movies = movies
 
-        moviesList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        moviesList.adapter = adapter
+        binding.rvMovieList.layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+        binding.rvMovieList.adapter = adapter
 
-        searchButton.setOnClickListener {
-            if (queryInput.text.isNotEmpty()) {
-                imdbService.getMovie(queryInput.text.toString()).enqueue(object :
+        binding.searchButton.setOnClickListener {
+            if (binding.queryInput.text.isNotEmpty()) {
+                imdbService.getMovie(binding.queryInput.text.toString()).enqueue(object :
                     Callback<MoviesResponse> {
                     override fun onResponse(
                         call: Call<MoviesResponse>,
@@ -87,20 +82,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun showMessage(text: String, additionalMessage: String) {
         if (text.isNotEmpty()) {
-            placeholderMessage.visibility = View.VISIBLE
+            binding.placeholderMessage.visibility = View.VISIBLE
             movies.clear()
             adapter.notifyDataSetChanged()
-            placeholderMessage.text = text
+            binding.placeholderMessage.text = text
             if (additionalMessage.isNotEmpty()) {
                 Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
                     .show()
             }
         } else {
-            placeholderMessage.visibility = View.GONE
+            binding.placeholderMessage.visibility = View.GONE
         }
     }
 
-    fun onMovieClick(movie: Movie) {
+    private fun onMovieClick(movie: Movie) {
         val intent = Intent(this, PosterActivity::class.java)
             .putExtra("MOVIE_POSTER", movie.image)
         startActivity(intent)

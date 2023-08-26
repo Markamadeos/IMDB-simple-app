@@ -1,8 +1,7 @@
-package com.example.imdbsearch
+package com.example.imdbsearch.ui.poster
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import com.bumptech.glide.Glide
 import com.example.imdbsearch.databinding.ActivityPosterBinding
 

@@ -1,4 +1,4 @@
-package com.example.imdbsearch
+package com.example.imdbsearch.ui.movies
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,7 +10,12 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.imdbsearch.ui.poster.PosterActivity
+import com.example.imdbsearch.R
+import com.example.imdbsearch.data.dto.MoviesSearchResponse
+import com.example.imdbsearch.data.network.IMDbApiService
 import com.example.imdbsearch.databinding.ActivityMainBinding
+import com.example.imdbsearch.models.Movie
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

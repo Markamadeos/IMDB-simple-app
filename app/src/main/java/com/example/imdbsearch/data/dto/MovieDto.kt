@@ -1,6 +1,6 @@
-package com.example.imdbsearch
+package com.example.imdbsearch.data.dto
 
-data class Movie(
+data class MovieDto(
     val id: String,
     val resultType: String,
     val image: String,

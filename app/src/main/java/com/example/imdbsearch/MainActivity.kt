@@ -75,36 +75,43 @@ class MainActivity : AppCompatActivity() {
 
     private fun searchRequest() {
         if (binding.queryInput.text.isNotEmpty()) {
-            imdbService.getMovie(binding.queryInput.text.toString()).enqueue(object :
-                Callback<MoviesSearchResponse> {
-                override fun onResponse(
-                    call: Call<MoviesSearchResponse>,
-                    response: Response<MoviesSearchResponse>
-                ) {
-                    if (response.code() == 200) {
-                        movies.clear()
-                        if (response.body()?.results?.isNotEmpty() == true) {
-                            movies.addAll(response.body()?.results!!)
-                            adapter.notifyDataSetChanged()
-                        }
-                        if (movies.isEmpty()) {
-                            showMessage(getString(R.string.nothing_found), "")
+
+            binding.placeholderMessage.visibility = View.GONE
+            binding.rvMovieList.visibility = View.GONE
+            binding.progressBar.visibility = View.VISIBLE
+
+            imdbService.searchMovies(binding.queryInput.text.toString())
+                .enqueue(object : Callback<MoviesSearchResponse> {
+                    override fun onResponse(
+                        call: Call<MoviesSearchResponse>,
+                        response: Response<MoviesSearchResponse>
+                    ) {
+                        binding.progressBar.visibility = View.GONE
+                        if (response.code() == 200) {
+                            movies.clear()
+                            if (response.body()?.results?.isNotEmpty() == true) {
+                                binding.rvMovieList.visibility = View.VISIBLE
+                                movies.addAll(response.body()?.results!!)
+                                adapter.notifyDataSetChanged()
+                            }
+                            if (movies.isEmpty()) {
+                                showMessage(getString(R.string.nothing_found), "")
+                            } else {
+                                hideMessage()
+                            }
                         } else {
-                            showMessage("", "")
+                            showMessage(
+                                getString(R.string.something_went_wrong),
+                                response.code().toString()
+                            )
                         }
-                    } else {
-                        showMessage(
-                            getString(R.string.something_went_wrong),
-                            response.code().toString()
-                        )
                     }
-                }
 
-                override fun onFailure(call: Call<MoviesSearchResponse>, t: Throwable) {
-                    showMessage(getString(R.string.something_went_wrong), t.message.toString())
-                }
-
-            })
+                    override fun onFailure(call: Call<MoviesSearchResponse>, t: Throwable) {
+                        binding.progressBar.visibility = View.GONE
+                        showMessage(getString(R.string.something_went_wrong), t.message.toString())
+                    }
+                })
         }
     }
 
@@ -138,6 +145,15 @@ class MainActivity : AppCompatActivity() {
             handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY_MS)
         }
         return current
+    }
+
+    private fun hideMessage() {
+        binding.placeholderMessage.visibility = View.GONE
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacks(searchRunnable)
     }
 
     companion object {

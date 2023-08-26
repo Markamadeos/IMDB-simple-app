@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
             binding.rvMovieList.visibility = View.GONE
             binding.progressBar.visibility = View.VISIBLE
 
-            imdbService.searchMovies(binding.queryInput.text.toString())
+            imdbService.findMovies(binding.queryInput.text.toString())
                 .enqueue(object : Callback<MoviesSearchResponse> {
                     override fun onResponse(
                         call: Call<MoviesSearchResponse>,

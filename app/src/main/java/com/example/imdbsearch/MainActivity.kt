@@ -2,6 +2,10 @@ package com.example.imdbsearch
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -21,13 +25,19 @@ class MainActivity : AppCompatActivity() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    private val imdbService = retrofit.create(IMDbApi::class.java)
+    private val imdbService = retrofit.create(IMDbApiService::class.java)
 
     private val movies = ArrayList<Movie>()
 
     private val adapter = MovieAdapter() { onMovieClick(it) }
 
     private lateinit var binding: ActivityMainBinding
+
+    private var isClickAllowed = true
+
+    private val handler = Handler(Looper.getMainLooper())
+
+    private val searchRunnable = Runnable { searchRequest() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,46 +47,64 @@ class MainActivity : AppCompatActivity() {
 
         adapter.movies = movies
 
+        binding.queryInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                searchDebounce()
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+        })
+
         binding.rvMovieList.layoutManager = LinearLayoutManager(
             this,
             LinearLayoutManager.VERTICAL,
             false
         )
         binding.rvMovieList.adapter = adapter
+    }
 
-        binding.searchButton.setOnClickListener {
-            if (binding.queryInput.text.isNotEmpty()) {
-                imdbService.getMovie(binding.queryInput.text.toString()).enqueue(object :
-                    Callback<MoviesResponse> {
-                    override fun onResponse(
-                        call: Call<MoviesResponse>,
-                        response: Response<MoviesResponse>
-                    ) {
-                        if (response.code() == 200) {
-                            movies.clear()
-                            if (response.body()?.results?.isNotEmpty() == true) {
-                                movies.addAll(response.body()?.results!!)
-                                adapter.notifyDataSetChanged()
-                            }
-                            if (movies.isEmpty()) {
-                                showMessage(getString(R.string.nothing_found), "")
-                            } else {
-                                showMessage("", "")
-                            }
-                        } else {
-                            showMessage(
-                                getString(R.string.something_went_wrong),
-                                response.code().toString()
-                            )
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY_MS)
+    }
+
+    private fun searchRequest() {
+        if (binding.queryInput.text.isNotEmpty()) {
+            imdbService.getMovie(binding.queryInput.text.toString()).enqueue(object :
+                Callback<MoviesSearchResponse> {
+                override fun onResponse(
+                    call: Call<MoviesSearchResponse>,
+                    response: Response<MoviesSearchResponse>
+                ) {
+                    if (response.code() == 200) {
+                        movies.clear()
+                        if (response.body()?.results?.isNotEmpty() == true) {
+                            movies.addAll(response.body()?.results!!)
+                            adapter.notifyDataSetChanged()
                         }
+                        if (movies.isEmpty()) {
+                            showMessage(getString(R.string.nothing_found), "")
+                        } else {
+                            showMessage("", "")
+                        }
+                    } else {
+                        showMessage(
+                            getString(R.string.something_went_wrong),
+                            response.code().toString()
+                        )
                     }
+                }
 
-                    override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
-                        showMessage(getString(R.string.something_went_wrong), t.message.toString())
-                    }
+                override fun onFailure(call: Call<MoviesSearchResponse>, t: Throwable) {
+                    showMessage(getString(R.string.something_went_wrong), t.message.toString())
+                }
 
-                })
-            }
+            })
         }
     }
 
@@ -96,9 +124,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onMovieClick(movie: Movie) {
-        val intent = Intent(this, PosterActivity::class.java)
-            .putExtra("MOVIE_POSTER", movie.image)
-        startActivity(intent)
+        if (clickDebounce()) {
+            val intent = Intent(this, PosterActivity::class.java)
+            intent.putExtra("poster", movie.image)
+            startActivity(intent)
+        }
+    }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY_MS)
+        }
+        return current
+    }
+
+    companion object {
+        private const val CLICK_DEBOUNCE_DELAY_MS = 1000L
+        private const val SEARCH_DEBOUNCE_DELAY_MS = 2000L
     }
 
 }

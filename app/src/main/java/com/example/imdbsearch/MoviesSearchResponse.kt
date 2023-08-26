@@ -1,8 +1,6 @@
 package com.example.imdbsearch
 
-import com.example.imdbsearch.Movie
-
-class MoviesResponse(
+class MoviesSearchResponse(
     val searchType: String,
     val expression: String,
     val results: List<Movie>

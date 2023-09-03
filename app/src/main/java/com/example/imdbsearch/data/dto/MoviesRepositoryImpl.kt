@@ -2,7 +2,7 @@ package com.example.imdbsearch.data.dto
 
 import com.example.imdbsearch.data.NetworkClient
 import com.example.imdbsearch.domain.api.MoviesRepository
-import com.example.imdbsearch.models.Movie
+import com.example.imdbsearch.domain.models.Movie
 
 class MoviesRepositoryImpl(private val networkClient: NetworkClient): MoviesRepository {
     override fun searchMovies(expression: String): List<Movie> {

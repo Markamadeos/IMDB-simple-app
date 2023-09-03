@@ -2,7 +2,7 @@ package com.example.imdbsearch.ui.movies
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.imdbsearch.models.Movie
+import com.example.imdbsearch.domain.models.Movie
 
 class MovieAdapter(private val clickListener: MovieClickListener) :
     RecyclerView.Adapter<MovieViewHolder>() {

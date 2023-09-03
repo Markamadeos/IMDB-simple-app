@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.imdbsearch.R
-import com.example.imdbsearch.models.Movie
+import com.example.imdbsearch.domain.models.Movie
 
 class MovieViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(LayoutInflater
     .from(parent.context)

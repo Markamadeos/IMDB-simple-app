@@ -15,7 +15,7 @@ import com.example.imdbsearch.R
 import com.example.imdbsearch.data.dto.MoviesSearchResponse
 import com.example.imdbsearch.data.network.IMDbApiService
 import com.example.imdbsearch.databinding.ActivityMainBinding
-import com.example.imdbsearch.models.Movie
+import com.example.imdbsearch.domain.models.Movie
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

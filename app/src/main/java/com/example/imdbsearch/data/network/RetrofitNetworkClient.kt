@@ -5,9 +5,10 @@ import com.example.imdbsearch.data.dto.MoviesSearchRequest
 import com.example.imdbsearch.data.dto.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.net.ssl.HttpsURLConnection
 
 class RetrofitNetworkClient : NetworkClient {
-    private val imdbBaseUrl = "https://imdb-api.com"
+    private val imdbBaseUrl = "https://imdb-api.com/"
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(imdbBaseUrl)
@@ -24,7 +25,7 @@ class RetrofitNetworkClient : NetworkClient {
 
             body.apply { resultCode = resp.code() }
         } else {
-            Response().apply { resultCode = 400 }
+            Response().apply { resultCode = HttpsURLConnection.HTTP_BAD_REQUEST }
         }
     }
 }

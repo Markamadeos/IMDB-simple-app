@@ -10,31 +10,20 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.imdbsearch.ui.poster.PosterActivity
+import com.example.imdbsearch.Creator
 import com.example.imdbsearch.R
-import com.example.imdbsearch.data.dto.MoviesSearchResponse
-import com.example.imdbsearch.data.network.IMDbApiService
 import com.example.imdbsearch.databinding.ActivityMainBinding
+import com.example.imdbsearch.domain.api.MoviesInteractor
 import com.example.imdbsearch.domain.models.Movie
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.imdbsearch.ui.poster.PosterActivity
 
 class MainActivity : AppCompatActivity() {
-    private val imdbBaseUrl = "https://imdb-api.com/"
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(imdbBaseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    private val imdbService = retrofit.create(IMDbApiService::class.java)
+    private val moviesInteractor = Creator.provideMoviesInteractor()
 
     private val movies = ArrayList<Movie>()
 
-    private val adapter = MovieAdapter() { onMovieClick(it) }
+    private val adapter = MovieAdapter { onMovieClick(it) }
 
     private lateinit var binding: ActivityMainBinding
 
@@ -85,38 +74,22 @@ class MainActivity : AppCompatActivity() {
             binding.rvMovieList.visibility = View.GONE
             binding.progressBar.visibility = View.VISIBLE
 
-            imdbService.findMovies(binding.queryInput.text.toString())
-                .enqueue(object : Callback<MoviesSearchResponse> {
-                    override fun onResponse(
-                        call: Call<MoviesSearchResponse>,
-                        response: Response<MoviesSearchResponse>
-                    ) {
+            moviesInteractor.searchMovies(binding.queryInput.text.toString(), object : MoviesInteractor.MoviesConsumer {
+                override fun consume(foundMovies: List<Movie>) {
+                    handler.post {
                         binding.progressBar.visibility = View.GONE
-                        if (response.code() == 200) {
-                            movies.clear()
-                            if (response.body()?.results?.isNotEmpty() == true) {
-                                binding.rvMovieList.visibility = View.VISIBLE
-                                movies.addAll(response.body()?.results!!)
-                                adapter.notifyDataSetChanged()
-                            }
-                            if (movies.isEmpty()) {
-                                showMessage(getString(R.string.nothing_found), "")
-                            } else {
-                                hideMessage()
-                            }
+                        movies.clear()
+                        movies.addAll(foundMovies)
+                        binding.rvMovieList.visibility = View.VISIBLE
+                        adapter.notifyDataSetChanged()
+                        if (movies.isEmpty()) {
+                            showMessage(getString(R.string.nothing_found), "")
                         } else {
-                            showMessage(
-                                getString(R.string.something_went_wrong),
-                                response.code().toString()
-                            )
+                            hideMessage()
                         }
                     }
-
-                    override fun onFailure(call: Call<MoviesSearchResponse>, t: Throwable) {
-                        binding.progressBar.visibility = View.GONE
-                        showMessage(getString(R.string.something_went_wrong), t.message.toString())
-                    }
-                })
+                }
+            })
         }
     }
 

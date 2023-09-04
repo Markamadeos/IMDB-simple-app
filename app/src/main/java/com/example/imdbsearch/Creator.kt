@@ -1,7 +1,7 @@
 package com.example.imdbsearch
 
 import android.app.Activity
-import com.example.imdbsearch.data.dto.MoviesRepositoryImpl
+import com.example.imdbsearch.data.MoviesRepositoryImpl
 import com.example.imdbsearch.data.network.RetrofitNetworkClient
 import com.example.imdbsearch.domain.api.MoviesInteractor
 import com.example.imdbsearch.domain.api.MoviesRepository

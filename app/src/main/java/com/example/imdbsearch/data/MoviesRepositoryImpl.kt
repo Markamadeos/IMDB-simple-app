@@ -1,6 +1,7 @@
-package com.example.imdbsearch.data.dto
+package com.example.imdbsearch.data
 
-import com.example.imdbsearch.data.NetworkClient
+import com.example.imdbsearch.data.dto.MoviesSearchRequest
+import com.example.imdbsearch.data.dto.MoviesSearchResponse
 import com.example.imdbsearch.domain.api.MoviesRepository
 import com.example.imdbsearch.domain.models.Movie
 

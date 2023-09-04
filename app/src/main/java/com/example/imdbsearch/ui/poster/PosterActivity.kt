@@ -13,7 +13,7 @@ class PosterActivity : AppCompatActivity() {
         binding = ActivityPosterBinding.inflate(layoutInflater).also {
             setContentView(it.root)
         }
-        val poster = intent.getStringExtra("MOVIE_POSTER")
+        val poster = intent.getStringExtra("poster")
         Glide.with(this)
             .load(poster)
             .into(binding.poster)    }

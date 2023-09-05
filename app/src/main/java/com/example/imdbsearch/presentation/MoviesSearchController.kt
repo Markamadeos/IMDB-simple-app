@@ -23,7 +23,7 @@ class MoviesSearchController(
     private val adapter: MovieAdapter
 ) {
 
-    private val moviesInteractor = Creator.provideMoviesInteractor()
+    private val moviesInteractor = Creator.provideMoviesInteractor(activity)
 
     fun onCreate() {
         placeholderMessage = activity.findViewById(R.id.placeholderMessage)

@@ -1,20 +1,16 @@
 package com.example.imdbsearch.ui.poster
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.bumptech.glide.Glide
-import com.example.imdbsearch.databinding.ActivityPosterBinding
+import androidx.appcompat.app.AppCompatActivity
+import com.example.imdbsearch.Creator
+import com.example.imdbsearch.R
 
 class PosterActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityPosterBinding
+    private val posterController = Creator.providePosterController(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityPosterBinding.inflate(layoutInflater).also {
-            setContentView(it.root)
-        }
-        val poster = intent.getStringExtra("MOVIE_POSTER")
-        Glide.with(this)
-            .load(poster)
-            .into(binding.poster)    }
+        setContentView(R.layout.activity_poster)
+        posterController.onCreate()
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.imdbsearch
+package com.example.imdbsearch.util
 
 import android.app.Activity
 import android.content.Context

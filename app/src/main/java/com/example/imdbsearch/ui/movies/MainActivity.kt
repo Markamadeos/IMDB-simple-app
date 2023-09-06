@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import com.example.imdbsearch.Creator
+import com.example.imdbsearch.util.Creator
 import com.example.imdbsearch.R
 import com.example.imdbsearch.ui.poster.PosterActivity
 

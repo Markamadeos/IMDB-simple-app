@@ -2,7 +2,7 @@ package com.example.imdbsearch.ui.poster
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.imdbsearch.Creator
+import com.example.imdbsearch.util.Creator
 import com.example.imdbsearch.R
 
 class PosterActivity : AppCompatActivity() {

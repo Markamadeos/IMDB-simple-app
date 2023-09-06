@@ -1,7 +1,8 @@
 package com.example.imdbsearch.domain.api
 
 import com.example.imdbsearch.domain.models.Movie
+import com.example.imdbsearch.util.Resource
 
 interface MoviesRepository {
-    fun searchMovies(expression: String): List<Movie>
+    fun searchMovies(expression: String): Resource<List<Movie>>
 }

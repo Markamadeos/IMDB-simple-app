@@ -12,7 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.imdbsearch.Creator
+import com.example.imdbsearch.util.Creator
 import com.example.imdbsearch.R
 import com.example.imdbsearch.domain.api.MoviesInteractor
 import com.example.imdbsearch.domain.models.Movie
@@ -70,6 +70,7 @@ class MoviesSearchController(
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
+
     private fun searchRequest() {
         if (queryInput.text.isNotEmpty()) {
 
@@ -77,24 +78,26 @@ class MoviesSearchController(
             moviesList.visibility = View.GONE
             progressBar.visibility = View.VISIBLE
 
-            moviesInteractor.searchMovies(
-                queryInput.text.toString(),
-                object : MoviesInteractor.MoviesConsumer {
-                    override fun consume(foundMovies: List<Movie>) {
-                        handler.post {
-                            progressBar.visibility = View.GONE
+            moviesInteractor.searchMovies(queryInput.text.toString(), object : MoviesInteractor.MoviesConsumer {
+                override fun consume(foundMovies: List<Movie>?, errorMessage: String?) {
+                    handler.post {
+                        progressBar.visibility = View.GONE
+                        if (foundMovies != null) {
                             movies.clear()
                             movies.addAll(foundMovies)
-                            moviesList.visibility = View.VISIBLE
                             adapter.notifyDataSetChanged()
-                            if (movies.isEmpty()) {
-                                showMessage(activity.getString(R.string.nothing_found), "")
-                            } else {
-                                hideMessage()
-                            }
+                            moviesList.visibility = View.VISIBLE
+                        }
+                        if (errorMessage != null) {
+                            showMessage(activity.getString(R.string.something_went_wrong), errorMessage)
+                        } else if (movies.isEmpty()) {
+                            showMessage(activity.getString(R.string.nothing_found), "")
+                        } else {
+                            hideMessage()
                         }
                     }
-                })
+                }
+            })
         }
     }
 

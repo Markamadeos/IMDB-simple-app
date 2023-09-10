@@ -11,10 +11,12 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.imdbsearch.util.Creator
 import com.example.imdbsearch.R
+import com.example.imdbsearch.domain.models.Movie
 import com.example.imdbsearch.presentation.movies.MoviesView
 import com.example.imdbsearch.ui.poster.PosterActivity
 
@@ -32,7 +34,7 @@ class MainActivity : Activity(), MoviesView {
 
     private val handler = Handler(Looper.getMainLooper())
 
-    private val moviesSearchPresenter = Creator.provideMoviesSearchPresenter(this, adapter, this)
+    private val moviesSearchPresenter = Creator.provideMoviesSearchPresenter(this,  this)
 
     private var textWatcher: TextWatcher? = null
 
@@ -65,8 +67,6 @@ class MainActivity : Activity(), MoviesView {
             }
         }
         textWatcher?.let { queryInput.addTextChangedListener(it) }
-
-        moviesSearchPresenter.onCreate()
     }
 
     override fun onDestroy() {
@@ -98,6 +98,16 @@ class MainActivity : Activity(), MoviesView {
 
     override fun changePlaceholderText(newPlaceholderText: String) {
         placeholderMessage.text = newPlaceholderText
+    }
+
+    override fun updateMoviesList(newMoviesList: List<Movie>) {
+        adapter.movies.clear()
+        adapter.movies.addAll(newMoviesList)
+        adapter.notifyDataSetChanged()
+    }
+
+    override fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG)
     }
 
     companion object {

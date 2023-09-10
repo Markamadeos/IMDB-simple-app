@@ -1,6 +1,5 @@
 package com.example.imdbsearch.util
 
-import android.app.Activity
 import android.content.Context
 import com.example.imdbsearch.data.MoviesRepositoryImpl
 import com.example.imdbsearch.data.network.RetrofitNetworkClient
@@ -8,9 +7,9 @@ import com.example.imdbsearch.domain.api.MoviesInteractor
 import com.example.imdbsearch.domain.api.MoviesRepository
 import com.example.imdbsearch.domain.impl.MoviesInteractorImpl
 import com.example.imdbsearch.presentation.movies.MoviesSearchPresenter
-import com.example.imdbsearch.presentation.PosterController
 import com.example.imdbsearch.presentation.movies.MoviesView
-import com.example.imdbsearch.ui.movies.MovieAdapter
+import com.example.imdbsearch.presentation.poster.PosterPresenter
+import com.example.imdbsearch.presentation.poster.PosterView
 
 object Creator {
     private fun getMoviesRepository(context: Context): MoviesRepository {
@@ -23,13 +22,12 @@ object Creator {
 
     fun provideMoviesSearchPresenter(
         view: MoviesView,
-        adapter: MovieAdapter,
         context: Context
     ): MoviesSearchPresenter {
-        return MoviesSearchPresenter(view, adapter, context)
+        return MoviesSearchPresenter(view, context)
     }
 
-    fun providePosterController(activity: Activity): PosterController {
-        return PosterController(activity)
+    fun providePosterPresenter(view: PosterView, url: String): PosterPresenter {
+        return PosterPresenter(view, url)
     }
 }

@@ -1,18 +1,9 @@
 package com.example.imdbsearch.presentation.movies
 
-import com.example.imdbsearch.domain.models.Movie
+import com.example.imdbsearch.ui.model.MoviesState
 
 interface MoviesView {
-
-    fun showPlaceholderMessage(isVisible: Boolean)
-
-    fun showMoviesList(isVisible: Boolean)
-
-    fun showProgressBar(isVisible: Boolean)
-
-    fun changePlaceholderText(newPlaceholderText: String)
-
-    fun updateMoviesList(newMoviesList: List<Movie>)
+    fun render(state: MoviesState)
 
     fun showToast(message: String)
 }

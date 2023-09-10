@@ -7,8 +7,9 @@ import com.example.imdbsearch.data.network.RetrofitNetworkClient
 import com.example.imdbsearch.domain.api.MoviesInteractor
 import com.example.imdbsearch.domain.api.MoviesRepository
 import com.example.imdbsearch.domain.impl.MoviesInteractorImpl
-import com.example.imdbsearch.presentation.MoviesSearchController
+import com.example.imdbsearch.presentation.movies.MoviesSearchPresenter
 import com.example.imdbsearch.presentation.PosterController
+import com.example.imdbsearch.presentation.movies.MoviesView
 import com.example.imdbsearch.ui.movies.MovieAdapter
 
 object Creator {
@@ -20,11 +21,12 @@ object Creator {
         return MoviesInteractorImpl(getMoviesRepository(context))
     }
 
-    fun provideMoviesSearchController(
-        activity: Activity,
-        adapter: MovieAdapter
-    ): MoviesSearchController {
-        return MoviesSearchController(activity, adapter)
+    fun provideMoviesSearchPresenter(
+        view: MoviesView,
+        adapter: MovieAdapter,
+        context: Context
+    ): MoviesSearchPresenter {
+        return MoviesSearchPresenter(view, adapter, context)
     }
 
     fun providePosterController(activity: Activity): PosterController {

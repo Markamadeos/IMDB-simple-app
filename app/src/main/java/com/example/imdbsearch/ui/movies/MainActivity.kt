@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.imdbsearch.util.Creator
 import com.example.imdbsearch.R
 import com.example.imdbsearch.domain.models.Movie
+import com.example.imdbsearch.presentation.movies.MoviesSearchPresenter
 import com.example.imdbsearch.presentation.movies.MoviesView
 import com.example.imdbsearch.ui.model.MoviesState
 import com.example.imdbsearch.ui.poster.PosterActivity
@@ -35,7 +36,7 @@ class MainActivity : Activity(), MoviesView {
 
     private val handler = Handler(Looper.getMainLooper())
 
-    private val moviesSearchPresenter = Creator.provideMoviesSearchPresenter(this, this)
+    //private val moviesSearchPresenter = Creator.provideMoviesSearchPresenter(this, this)
 
     private var textWatcher: TextWatcher? = null
 
@@ -50,6 +51,12 @@ class MainActivity : Activity(), MoviesView {
         queryInput = findViewById(R.id.queryInput)
         moviesList = findViewById(R.id.rv_movie_list)
         progressBar = findViewById(R.id.progressBar)
+        if (moviesSearchPresenter == null) {
+            moviesSearchPresenter = Creator.provideMoviesSearchPresenter(
+                view = this,
+                context = this,
+            )
+        }
 
         moviesList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         moviesList.adapter = adapter
@@ -128,5 +135,7 @@ class MainActivity : Activity(), MoviesView {
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+
+        private var moviesSearchPresenter: MoviesSearchPresenter? = null
     }
 }

@@ -31,7 +31,6 @@ class MoviesSearchPresenter(
         handler.removeCallbacks(searchRunnable)
     }
 
-
     fun searchDebounce(changedText: String) {
         this.lastSearchText = changedText
         handler.removeCallbacks(searchRunnable)

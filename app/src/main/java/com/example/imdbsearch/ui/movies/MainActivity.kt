@@ -53,10 +53,10 @@ class MainActivity : Activity(), MoviesView {
         progressBar = findViewById(R.id.progressBar)
         if (moviesSearchPresenter == null) {
             moviesSearchPresenter = Creator.provideMoviesSearchPresenter(
-                view = this,
-                context = this,
+                context = this.applicationContext
             )
         }
+        moviesSearchPresenter?.attachView(this)
 
         moviesList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         moviesList.adapter = adapter
@@ -77,10 +77,30 @@ class MainActivity : Activity(), MoviesView {
         textWatcher?.let { queryInput.addTextChangedListener(it) }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        moviesSearchPresenter?.detachView()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        moviesSearchPresenter?.attachView(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        moviesSearchPresenter?.attachView(this)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        textWatcher?.let { queryInput.removeTextChangedListener(it) }
+        moviesSearchPresenter?.detachView()
         moviesSearchPresenter?.onDestroy()
+        if (isFinishing()) {
+            moviesSearchPresenter = null
+        }
+
+        textWatcher?.let { queryInput.removeTextChangedListener(it) }
     }
 
     private fun clickDebounce(): Boolean {

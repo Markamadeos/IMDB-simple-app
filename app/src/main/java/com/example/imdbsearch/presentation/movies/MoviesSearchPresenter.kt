@@ -8,34 +8,25 @@ import com.example.imdbsearch.domain.api.MoviesInteractor
 import com.example.imdbsearch.domain.models.Movie
 import com.example.imdbsearch.ui.model.MoviesState
 import com.example.imdbsearch.util.Creator
+import moxy.MvpPresenter
 
 class MoviesSearchPresenter(
     private val context: Context
-) {
+) : MvpPresenter<MoviesView>() {
 
     private var view: MoviesView? = null
     private val moviesInteractor = Creator.provideMoviesInteractor(context)
     private val movies = ArrayList<Movie>()
     private val handler = Handler(Looper.getMainLooper())
     private var lastSearchText: String? = null
-    private var state: MoviesState? = null
-
-    fun attachView(view: MoviesView) {
-        this.view = view
-        state?.let { view.render(it) }
-    }
-
-    fun detachView() {
-        this.view = null
-    }
 
     private val searchRunnable = Runnable {
         val newSearchText = lastSearchText ?: ""
         searchRequest(newSearchText)
     }
 
-    fun onDestroy() {
-        handler.removeCallbacks(searchRunnable)
+    override fun onDestroy() {
+        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
     }
 
     fun searchDebounce(changedText: String) {
@@ -94,11 +85,11 @@ class MoviesSearchPresenter(
     }
 
     private fun renderState(state: MoviesState) {
-        this.state = state
-        this.view?.render(state)
+        viewState.render(state)
     }
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY_MS = 2000L
+        private val SEARCH_REQUEST_TOKEN = Any()
     }
 }

@@ -10,17 +10,17 @@ class MovieAdapter(private val clickListener: MovieClickListener) :
     var movies = ArrayList<Movie>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder =
-        MovieViewHolder(parent)
+        MovieViewHolder(parent, clickListener)
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.bind(movies.get(position))
-        holder.itemView.setOnClickListener { clickListener.onMovieClick(movies.get(position)) }
     }
 
     override fun getItemCount() = movies.size
 
-    fun interface MovieClickListener {
+    interface MovieClickListener {
         fun onMovieClick(movie: Movie)
+        fun onFavoriteToggleClick(movie: Movie)
     }
 }
 

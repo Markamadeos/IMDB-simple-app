@@ -27,13 +27,23 @@ class MainActivity : ComponentActivity() {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
-    private val adapter = MovieAdapter {
-        if (clickDebounce()) {
-            val intent = Intent(this, PosterActivity::class.java)
-            intent.putExtra("poster", it.image)
-            startActivity(intent)
+    private val adapter = MovieAdapter(
+        object : MovieAdapter.MovieClickListener {
+            override fun onMovieClick(movie: Movie) {
+                if (clickDebounce()) {
+                    val intent = Intent(this@MainActivity, PosterActivity::class.java)
+                    intent.putExtra("poster", movie.image)
+                    startActivity(intent)
+                }
+            }
+
+            override fun onFavoriteToggleClick(movie: Movie) {
+                // 1
+                viewModel.toggleFavorite(movie)
+            }
+
         }
-    }
+    )
 
     private lateinit var queryInput: EditText
     private lateinit var placeholderMessage: TextView
@@ -141,5 +151,4 @@ class MainActivity : ComponentActivity() {
         }
         return current
     }
-
 }

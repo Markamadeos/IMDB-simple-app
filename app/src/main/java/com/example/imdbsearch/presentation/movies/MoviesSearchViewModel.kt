@@ -1,3 +1,5 @@
+package com.example.imdbsearch.presentation.movies
+
 import android.app.Application
 import android.os.Handler
 import android.os.Looper
@@ -19,15 +21,21 @@ import com.example.imdbsearch.util.Creator
 
 class MoviesSearchViewModel(application: Application) : AndroidViewModel(application) {
 
-    companion object {
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private val SEARCH_REQUEST_TOKEN = Any()
+    private val moviesInteractor = Creator.provideMoviesInteractor(getApplication())
+    private val handler = Handler(Looper.getMainLooper())
 
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                MoviesSearchViewModel(this[APPLICATION_KEY] as Application)
-            }
-        }
+    private val stateLiveData = MutableLiveData<MoviesState>()
+    fun observeState(): LiveData<MoviesState> = mediatorStateLiveData
+
+    //fun observeState(): LiveData<MoviesState> = stateLiveData
+
+    private val showToast = SingleLiveEvent<String>()
+    fun observeShowToast(): LiveData<String> = showToast
+
+    private var latestSearchText: String? = null
+
+    override fun onCleared() {
+        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
     }
 
     private val mediatorStateLiveData = MediatorLiveData<MoviesState>().also { liveData ->
@@ -41,22 +49,6 @@ class MoviesSearchViewModel(application: Application) : AndroidViewModel(applica
                 is MoviesState.Loading -> movieState
             }
         }
-    }
-
-
-    private val moviesInteractor = Creator.provideMoviesInteractor(getApplication())
-    private val handler = Handler(Looper.getMainLooper())
-
-    private val stateLiveData = MutableLiveData<MoviesState>()
-    //fun observeState(): LiveData<MoviesState> = stateLiveData
-
-    private val showToast = SingleLiveEvent<String>()
-    fun observeShowToast(): LiveData<String> = showToast
-
-    private var latestSearchText: String? = null
-
-    override fun onCleared() {
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
     }
 
     fun searchDebounce(changedText: String) {
@@ -153,5 +145,15 @@ class MoviesSearchViewModel(application: Application) : AndroidViewModel(applica
             }
         }
     }
-    fun observeState(): LiveData<MoviesState> = mediatorStateLiveData
+
+    companion object {
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private val SEARCH_REQUEST_TOKEN = Any()
+
+        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                MoviesSearchViewModel(this[APPLICATION_KEY] as Application)
+            }
+        }
+    }
 }

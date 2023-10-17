@@ -15,8 +15,8 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.imdbsearch.R
 import com.example.imdbsearch.domain.api.MoviesInteractor
 import com.example.imdbsearch.domain.models.Movie
-import com.example.imdbsearch.ui.model.MoviesState
-import com.example.imdbsearch.ui.model.SingleLiveEvent
+import com.example.imdbsearch.presentation.ui.model.MoviesState
+import com.example.imdbsearch.presentation.ui.model.SingleLiveEvent
 import com.example.imdbsearch.util.Creator
 
 class MoviesSearchViewModel(application: Application) : AndroidViewModel(application) {

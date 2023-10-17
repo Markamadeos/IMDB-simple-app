@@ -1,4 +1,4 @@
-package com.example.imdbsearch.ui.movies
+package com.example.imdbsearch.presentation.ui.movies
 
 import com.example.imdbsearch.presentation.movies.MoviesSearchViewModel
 import android.content.Intent
@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.imdbsearch.R
 import com.example.imdbsearch.domain.models.Movie
-import com.example.imdbsearch.ui.model.MoviesState
-import com.example.imdbsearch.ui.poster.PosterActivity
+import com.example.imdbsearch.presentation.ui.model.MoviesState
+import com.example.imdbsearch.presentation.ui.poster.PosterActivity
 
 class MainActivity : ComponentActivity() {
 

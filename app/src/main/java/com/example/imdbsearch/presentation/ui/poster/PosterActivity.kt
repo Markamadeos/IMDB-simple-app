@@ -1,4 +1,4 @@
-package com.example.imdbsearch.ui.poster
+package com.example.imdbsearch.presentation.ui.poster
 
 import android.os.Bundle
 import android.widget.ImageView

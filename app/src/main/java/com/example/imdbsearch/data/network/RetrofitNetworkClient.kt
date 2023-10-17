@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.example.imdbsearch.data.NetworkClient
+import com.example.imdbsearch.data.dto.MovieDetailsResponse
 import com.example.imdbsearch.data.dto.MoviesSearchRequest
 import com.example.imdbsearch.data.dto.Response
 import retrofit2.Retrofit

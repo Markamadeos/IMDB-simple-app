@@ -1,4 +1,4 @@
-package com.example.imdbsearch.ui.movies
+package com.example.imdbsearch.presentation.ui.movies
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable

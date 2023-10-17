@@ -1,4 +1,4 @@
-package com.example.imdbsearch.ui.model
+package com.example.imdbsearch.presentation.ui.model
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData

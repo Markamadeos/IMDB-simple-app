@@ -1,5 +1,6 @@
 package com.example.imdbsearch.presentation.details.about.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.imdbsearch.databinding.FragmentAboutBinding
 import com.example.imdbsearch.domain.models.MovieDetails
+import com.example.imdbsearch.presentation.cast.CastActivity
 import com.example.imdbsearch.presentation.details.about.model.AboutState
 import com.example.imdbsearch.presentation.details.about.view_model.AboutViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -20,8 +22,10 @@ class AboutFragment : Fragment() {
 
     private lateinit var binding: FragmentAboutBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentAboutBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -30,10 +34,24 @@ class AboutFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         aboutViewModel.observeState().observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 is AboutState.Content -> showDetails(it.movie)
                 is AboutState.Error -> showErrorMessage(it.message)
             }
+        }
+
+        setupButton()
+    }
+
+    private fun setupButton() {
+        binding.btnShowCast.setOnClickListener {
+            val intent = Intent(
+                CastActivity.newInstance(
+                    context = requireContext(),
+                    movieId = requireArguments().getString(MOVIE_ID).orEmpty()
+                )
+            )
+            startActivity(intent)
         }
     }
 

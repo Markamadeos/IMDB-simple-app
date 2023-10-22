@@ -1,7 +1,6 @@
 package com.example.imdbsearch.presentation.details
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.imdbsearch.R
 import com.example.imdbsearch.databinding.ActivityDetailsBinding

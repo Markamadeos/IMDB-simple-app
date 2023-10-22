@@ -25,4 +25,13 @@ class MoviesInteractorImpl(private val repository: MoviesRepository) : MoviesInt
     override fun removeMovieFromFavorites(movie: Movie) {
         repository.removeMovieFromFavorites(movie)
     }
+
+    override fun getMoviesDetails(movieId: String, consumer: MoviesInteractor.MovieDetailsConsumer) {
+        executor.execute {
+            when(val resource = repository.getMovieDetails(movieId)) {
+                is Resource.Success -> { consumer.consume(resource.data, null) }
+                is Resource.Error -> { consumer.consume(resource.data, resource.message) }
+            }
+        }
+    }
 }

@@ -19,10 +19,10 @@ import com.example.imdbsearch.domain.models.Movie
 import com.example.imdbsearch.presentation.movies.view_model.MoviesSearchViewModel
 import com.example.imdbsearch.presentation.movies.model.MoviesState
 import com.example.imdbsearch.presentation.movies.MovieAdapter
-import com.example.imdbsearch.presentation.poster.ui.PosterActivity
+import com.example.imdbsearch.presentation.details.DetailsActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity() {
+class MoviesActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<MoviesSearchViewModel>()
 
@@ -30,8 +30,9 @@ class MainActivity : AppCompatActivity() {
         object : MovieAdapter.MovieClickListener {
             override fun onMovieClick(movie: Movie) {
                 if (clickDebounce()) {
-                    val intent = Intent(this@MainActivity, PosterActivity::class.java)
+                    val intent = Intent(this@MoviesActivity, DetailsActivity::class.java)
                     intent.putExtra("poster", movie.image)
+                    intent.putExtra("id", movie.id)
                     startActivity(intent)
                 }
             }

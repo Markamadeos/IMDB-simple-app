@@ -16,10 +16,10 @@
         android:theme="@style/Theme.IMDBSearch"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.poster.ui.PosterActivity"
+            android:name=".presentation.details.DetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.movies.ui.MainActivity"
+            android:name=".presentation.movies.ui.MoviesActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

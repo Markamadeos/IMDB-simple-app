@@ -1,7 +1,7 @@
 package com.example.imdbsearch.data.network
 
-import com.example.imdbsearch.data.dto.MovieDetailsResponse
-import com.example.imdbsearch.data.dto.MoviesSearchResponse
+import com.example.imdbsearch.data.dto.detail.MovieDetailsResponse
+import com.example.imdbsearch.data.dto.movie.MoviesSearchResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

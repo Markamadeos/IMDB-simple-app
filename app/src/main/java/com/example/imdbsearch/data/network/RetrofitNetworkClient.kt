@@ -4,29 +4,26 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.example.imdbsearch.data.NetworkClient
-import com.example.imdbsearch.data.dto.MoviesSearchRequest
+import com.example.imdbsearch.data.dto.movie.MoviesSearchRequest
 import com.example.imdbsearch.data.dto.Response
+import com.example.imdbsearch.data.dto.detail.MovieDetailsRequest
 import java.net.HttpURLConnection
 
 class RetrofitNetworkClient(private val imdbService: IMDbApiService, private val context: Context) : NetworkClient {
-//    private val imdbBaseUrl = "https://imdb-api.com"
-//
-//    private val retrofit = Retrofit.Builder()
-//        .baseUrl(imdbBaseUrl)
-//        .addConverterFactory(GsonConverterFactory.create())
-//        .build()
-//
-//    private val imdbService = retrofit.create(IMDbApiService::class.java)
 
     override fun doRequest(dto: Any): Response {
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
-        if (dto !is MoviesSearchRequest) {
+        if ((dto !is MoviesSearchRequest) && (dto !is MovieDetailsRequest)) {
             return Response().apply { resultCode = HttpURLConnection.HTTP_BAD_REQUEST }
         }
 
-        val response = imdbService.searchMovies(dto.expression).execute()
+        val response =if (dto is MoviesSearchRequest) {
+            imdbService.searchMovies(dto.expression).execute()
+        } else {
+            imdbService.getMovieDetails((dto as MovieDetailsRequest).movieId).execute()
+        }
         val body = response.body()
         return body?.apply { resultCode = response.code() } ?: Response().apply { resultCode = response.code() }
     }

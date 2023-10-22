@@ -1,6 +1,6 @@
-package com.example.imdbsearch.data.dto
+package com.example.imdbsearch.data.dto.movie
 
-import com.example.imdbsearch.domain.models.Movie
+import com.example.imdbsearch.data.dto.Response
 
 class MoviesSearchResponse(
     val searchType: String,

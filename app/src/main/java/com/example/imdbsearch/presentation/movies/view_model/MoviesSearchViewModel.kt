@@ -1,4 +1,4 @@
-package com.example.imdbsearch.presentation.movies
+package com.example.imdbsearch.presentation.movies.view_model
 
 import android.app.Application
 import android.os.Handler
@@ -8,26 +8,21 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.imdbsearch.R
 import com.example.imdbsearch.domain.api.MoviesInteractor
 import com.example.imdbsearch.domain.models.Movie
-import com.example.imdbsearch.presentation.ui.model.MoviesState
-import com.example.imdbsearch.presentation.ui.model.SingleLiveEvent
-import com.example.imdbsearch.util.Creator
+import com.example.imdbsearch.presentation.movies.model.MoviesState
+import com.example.imdbsearch.presentation.movies.model.SingleLiveEvent
 
-class MoviesSearchViewModel(application: Application) : AndroidViewModel(application) {
+class MoviesSearchViewModel(
+    private val moviesInteractor: MoviesInteractor,
+    application: Application
+) : AndroidViewModel(application) {
 
-    private val moviesInteractor = Creator.provideMoviesInteractor(getApplication())
     private val handler = Handler(Looper.getMainLooper())
 
     private val stateLiveData = MutableLiveData<MoviesState>()
     fun observeState(): LiveData<MoviesState> = mediatorStateLiveData
-
-    //fun observeState(): LiveData<MoviesState> = stateLiveData
 
     private val showToast = SingleLiveEvent<String>()
     fun observeShowToast(): LiveData<String> = showToast
@@ -115,6 +110,7 @@ class MoviesSearchViewModel(application: Application) : AndroidViewModel(applica
     private fun renderState(state: MoviesState) {
         stateLiveData.postValue(state)
     }
+
     fun toggleFavorite(movie: Movie) {
         if (movie.inFavorite) {
             moviesInteractor.removeMovieFromFavorites(movie)
@@ -150,10 +146,10 @@ class MoviesSearchViewModel(application: Application) : AndroidViewModel(applica
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private val SEARCH_REQUEST_TOKEN = Any()
 
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                MoviesSearchViewModel(this[APPLICATION_KEY] as Application)
-            }
-        }
+//        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
+//            initializer {
+//                MoviesSearchViewModel(this[APPLICATION_KEY] as Application)
+//            }
+//        }
     }
 }

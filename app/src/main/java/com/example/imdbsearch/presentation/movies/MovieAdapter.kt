@@ -1,4 +1,4 @@
-package com.example.imdbsearch.presentation.ui.movies
+package com.example.imdbsearch.presentation.movies
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView

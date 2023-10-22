@@ -1,6 +1,5 @@
-package com.example.imdbsearch.presentation.ui.movies
+package com.example.imdbsearch.presentation.movies.ui
 
-import com.example.imdbsearch.presentation.movies.MoviesSearchViewModel
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -12,20 +11,20 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.imdbsearch.R
 import com.example.imdbsearch.domain.models.Movie
-import com.example.imdbsearch.presentation.ui.model.MoviesState
-import com.example.imdbsearch.presentation.ui.poster.PosterActivity
+import com.example.imdbsearch.presentation.movies.view_model.MoviesSearchViewModel
+import com.example.imdbsearch.presentation.movies.model.MoviesState
+import com.example.imdbsearch.presentation.movies.MovieAdapter
+import com.example.imdbsearch.presentation.poster.ui.PosterActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
-    companion object {
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-    }
+    private val viewModel by viewModel<MoviesSearchViewModel>()
 
     private val adapter = MovieAdapter(
         object : MovieAdapter.MovieClickListener {
@@ -55,15 +54,9 @@ class MainActivity : ComponentActivity() {
 
     private val handler = Handler(Looper.getMainLooper())
 
-    private lateinit var viewModel: MoviesSearchViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        viewModel = ViewModelProvider(this,
-            MoviesSearchViewModel.getViewModelFactory()
-        )[MoviesSearchViewModel::class.java]
 
         placeholderMessage = findViewById(R.id.placeholderMessage)
         queryInput = findViewById(R.id.queryInput)
@@ -150,5 +143,10 @@ class MainActivity : ComponentActivity() {
             handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
         }
         return current
+    }
+
+
+    companion object {
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }

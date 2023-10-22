@@ -1,4 +1,4 @@
-package com.example.imdbsearch.presentation.ui.model
+package com.example.imdbsearch.presentation.movies.model
 
 import com.example.imdbsearch.domain.models.Movie
 

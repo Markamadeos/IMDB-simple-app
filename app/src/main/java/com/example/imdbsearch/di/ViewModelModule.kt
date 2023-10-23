@@ -1,3 +1,4 @@
+import com.example.imdbsearch.presentation.cast.view_model.MoviesCastViewModel
 import com.example.imdbsearch.presentation.details.about.view_model.AboutViewModel
 import com.example.imdbsearch.presentation.movies.view_model.MoviesSearchViewModel
 import com.example.imdbsearch.presentation.details.poster.PosterViewModel
@@ -17,6 +18,10 @@ val viewModelModule = module {
 
     viewModel { (posterUrl: String) ->
         PosterViewModel(posterUrl = posterUrl)
+    }
+
+    viewModel { (movieId: String) ->
+        MoviesCastViewModel(movieId = movieId, moviesInteractor = get())
     }
 
 } 

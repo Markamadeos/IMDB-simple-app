@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.imdbsearch.databinding.FragmentAboutBinding
 import com.example.imdbsearch.domain.models.MovieDetails
-import com.example.imdbsearch.presentation.cast.CastActivity
+import com.example.imdbsearch.presentation.cast.ui.MoviesCastActivity
 import com.example.imdbsearch.presentation.details.about.model.AboutState
 import com.example.imdbsearch.presentation.details.about.view_model.AboutViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -46,7 +46,7 @@ class AboutFragment : Fragment() {
     private fun setupButton() {
         binding.btnShowCast.setOnClickListener {
             val intent = Intent(
-                CastActivity.newInstance(
+                MoviesCastActivity.newInstance(
                     context = requireContext(),
                     movieId = requireArguments().getString(MOVIE_ID).orEmpty()
                 )

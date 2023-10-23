@@ -12,12 +12,18 @@ class MoviesInteractorImpl(private val repository: MoviesRepository) : MoviesInt
 
     override fun searchMovies(expression: String, consumer: MoviesInteractor.MoviesConsumer) {
         executor.execute {
-            when(val resource = repository.searchMovies(expression)) {
-                is Resource.Success -> { consumer.consume(resource.data, null) }
-                is Resource.Error -> { consumer.consume(null, resource.message) }
+            when (val resource = repository.searchMovies(expression)) {
+                is Resource.Success -> {
+                    consumer.consume(resource.data, null)
+                }
+
+                is Resource.Error -> {
+                    consumer.consume(null, resource.message)
+                }
             }
         }
     }
+
     override fun addMovieToFavorites(movie: Movie) {
         repository.addMovieToFavorites(movie)
     }
@@ -26,11 +32,35 @@ class MoviesInteractorImpl(private val repository: MoviesRepository) : MoviesInt
         repository.removeMovieFromFavorites(movie)
     }
 
-    override fun getMoviesDetails(movieId: String, consumer: MoviesInteractor.MovieDetailsConsumer) {
+    override fun getMoviesDetails(
+        movieId: String,
+        consumer: MoviesInteractor.MovieDetailsConsumer
+    ) {
         executor.execute {
-            when(val resource = repository.getMovieDetails(movieId)) {
-                is Resource.Success -> { consumer.consume(resource.data, null) }
-                is Resource.Error -> { consumer.consume(resource.data, resource.message) }
+            when (val resource = repository.getMovieDetails(movieId)) {
+                is Resource.Success -> {
+                    consumer.consume(resource.data, null)
+                }
+
+                is Resource.Error -> {
+                    consumer.consume(resource.data, resource.message)
+                }
+            }
+        }
+    }
+
+    override fun getMovieCast(movieId: String, consumer: MoviesInteractor.MovieCastConsumer) {
+        executor.execute {
+            when (val resource = repository.getMovieCast(movieId = movieId)) {
+                is Resource.Success -> consumer.consume(
+                    movieCast = resource.data,
+                    errorMessage = null
+                )
+
+                is Resource.Error -> consumer.consume(
+                    movieCast = resource.data,
+                    errorMessage = resource.message
+                )
             }
         }
     }

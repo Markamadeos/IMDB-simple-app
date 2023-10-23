@@ -1,8 +1,8 @@
 package com.example.imdbsearch.domain.models
 
 data class MovieCast(
-    val imdbId: String,
-    val fullTitle: String,
+    val imdbId: String?,
+    val fullTitle: String?,
     val directors: List<MovieCastPerson>,
     val writers: List<MovieCastPerson>,
     val actors: List<MovieCastPerson>,
@@ -10,8 +10,8 @@ data class MovieCast(
 )
 
 data class MovieCastPerson(
-    val id: String,
-    val name: String,
-    val description: String,
+    val id: String?,
+    val name: String?,
+    val description: String?,
     val image: String?,
 )

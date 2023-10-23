@@ -30,7 +30,7 @@ class MovieCastConverter {
 
     private fun convertOthers(othersResponses: List<OtherResponse>): List<MovieCastPerson> {
         return othersResponses.flatMap { otherResponse ->
-            otherResponse.items.map { it.toMovieCastPerson(jobPrefix = otherResponse.job) }
+            otherResponse.items.map { it.toMovieCastPerson(jobPrefix = otherResponse.job ?: "") }
         }
     }
 

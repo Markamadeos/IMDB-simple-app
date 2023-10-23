@@ -16,7 +16,7 @@
         android:theme="@style/Theme.IMDBSearch"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.cast.CastActivity"
+            android:name=".presentation.cast.ui.CastActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.details.DetailsActivity"

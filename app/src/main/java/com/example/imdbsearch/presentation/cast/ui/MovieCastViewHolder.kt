@@ -20,17 +20,17 @@ class MovieCastViewHolder(parent: ViewGroup) :
     var personName: TextView = itemView.findViewById(R.id.actorNameTextView)
     var personDescription: TextView = itemView.findViewById(R.id.actorDescriptionTextView)
 
-    fun bind(movieCastPerson: MovieCastPerson) {
-        if (movieCastPerson.image == null) {
+    fun bind(item: MovieCastRVItem.PersonItem) {
+        if (item.data.image == null) {
             actorImage.isVisible = false
         } else {
             Glide.with(itemView)
-                .load(movieCastPerson.image)
+                .load(item.data.image)
                 .into(actorImage)
             actorImage.isVisible = true
         }
 
-        personName.text = movieCastPerson.name
-        personDescription.text = movieCastPerson.description
+        personName.text = item.data.name
+        personDescription.text = item.data.description
     }
 }

@@ -7,7 +7,7 @@ sealed interface MoviesCastState {
     object Loading : MoviesCastState
 
     data class Content(
-        val fullTittle: String,
+        val fullTitle: String,
         val items: List<MovieCastRVItem>
     ) : MoviesCastState
 

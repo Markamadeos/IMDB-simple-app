@@ -1,39 +1,56 @@
 package com.example.imdbsearch.presentation.movies.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.imdbsearch.R
+import com.example.imdbsearch.databinding.FragmentMoviesBinding
 import com.example.imdbsearch.domain.models.Movie
-import com.example.imdbsearch.presentation.movies.view_model.MoviesSearchViewModel
-import com.example.imdbsearch.presentation.movies.model.MoviesState
+import com.example.imdbsearch.presentation.details.ui.DetailsFragment
 import com.example.imdbsearch.presentation.movies.MovieAdapter
-import com.example.imdbsearch.presentation.details.DetailsActivity
+import com.example.imdbsearch.presentation.movies.model.MoviesState
+import com.example.imdbsearch.presentation.movies.view_model.MoviesSearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MoviesActivity : AppCompatActivity() {
+class MoviesFragment : Fragment() {
 
     private val viewModel by viewModel<MoviesSearchViewModel>()
-
     private val adapter = MovieAdapter(
         object : MovieAdapter.MovieClickListener {
             override fun onMovieClick(movie: Movie) {
                 if (clickDebounce()) {
-                    val intent = Intent(this@MoviesActivity, DetailsActivity::class.java)
-                    intent.putExtra("poster", movie.image)
-                    intent.putExtra("id", movie.id)
-                    startActivity(intent)
+
+                    // Навигируемся на следующий экран
+                    parentFragmentManager.commit {
+                        replace(
+                            // Указали, в каком контейнере работаем
+                            R.id.rootFragmentContainerView,
+                            // Создали фрагмент
+                            DetailsFragment.newInstance(
+                                movieId = movie.id,
+                                posterUrl = movie.image
+                            ),
+                            // Указали тег фрагмента
+                            DetailsFragment.TAG
+                        )
+
+                        // Добавляем фрагмент в Back Stack
+                        addToBackStack(DetailsFragment.TAG)
+                    }
+
                 }
             }
 
@@ -44,6 +61,9 @@ class MoviesActivity : AppCompatActivity() {
 
         }
     )
+    private val handler = Handler(Looper.getMainLooper())
+
+    private lateinit var binding: FragmentMoviesBinding
 
     private lateinit var queryInput: EditText
     private lateinit var placeholderMessage: TextView
@@ -53,18 +73,26 @@ class MoviesActivity : AppCompatActivity() {
 
     private var isClickAllowed = true
 
-    private val handler = Handler(Looper.getMainLooper())
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentMoviesBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        placeholderMessage = findViewById(R.id.placeholderMessage)
-        queryInput = findViewById(R.id.queryInput)
-        moviesList = findViewById(R.id.rv_movie_list)
-        progressBar = findViewById(R.id.progressBar)
+        placeholderMessage = binding.placeholderMessage
+        queryInput = binding.queryInput
+        moviesList = binding.rvMovieList
+        progressBar = binding.progressBar
 
-        moviesList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        // Здесь пришлось поправить использование Context
+        moviesList.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         moviesList.adapter = adapter
 
         textWatcher = object : TextWatcher {
@@ -80,24 +108,27 @@ class MoviesActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
             }
         }
-        textWatcher?.let { queryInput.addTextChangedListener(it) }
+        textWatcher.let { queryInput.addTextChangedListener(it) }
 
-        viewModel.observeState().observe(this) {
+        // Здесь пришлось заменить LifecycleOwner на ViewLifecycleOwner
+        viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
 
-        viewModel.observeShowToast().observe(this) {
+        // Здесь пришлось заменить LifecycleOwner на ViewLifecycleOwner
+        viewModel.observeShowToast().observe(viewLifecycleOwner) {
             showToast(it)
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         textWatcher?.let { queryInput.removeTextChangedListener(it) }
     }
 
-    private fun showToast(additionalMessage: String) {
-        Toast.makeText(this, additionalMessage, Toast.LENGTH_LONG).show()
+    private fun showToast(additionalMessage: String?) {
+        // Здесь пришлось поправить использование Context
+        Toast.makeText(requireContext(), additionalMessage, Toast.LENGTH_LONG).show()
     }
 
     private fun render(state: MoviesState) {
@@ -145,7 +176,6 @@ class MoviesActivity : AppCompatActivity() {
         }
         return current
     }
-
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L

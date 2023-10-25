@@ -1,14 +1,15 @@
 package com.example.imdbsearch.presentation.details.about.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import com.example.imdbsearch.R
 import com.example.imdbsearch.databinding.FragmentAboutBinding
 import com.example.imdbsearch.domain.models.MovieDetails
-import com.example.imdbsearch.presentation.cast.ui.MoviesCastActivity
+import com.example.imdbsearch.presentation.cast.ui.MoviesCastFragment
 import com.example.imdbsearch.presentation.details.about.model.AboutState
 import com.example.imdbsearch.presentation.details.about.view_model.AboutViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -45,13 +46,17 @@ class AboutFragment : Fragment() {
 
     private fun setupButton() {
         binding.btnShowCast.setOnClickListener {
-            val intent = Intent(
-                MoviesCastActivity.newInstance(
-                    context = requireContext(),
-                    movieId = requireArguments().getString(MOVIE_ID).orEmpty()
+            // Осуществляем навигацию
+            parentFragment?.parentFragmentManager?.commit {
+                replace(
+                    R.id.rootFragmentContainerView,
+                    MoviesCastFragment.newInstance(
+                        movieId = requireArguments().getString(MOVIE_ID).orEmpty()
+                    ),
+                    MoviesCastFragment.TAG
                 )
-            )
-            startActivity(intent)
+                addToBackStack(MoviesCastFragment.TAG)
+            }
         }
     }
 
@@ -81,7 +86,6 @@ class AboutFragment : Fragment() {
 
     companion object {
         private const val MOVIE_ID = "movie_id"
-
         fun newInstance(movieId: String) = AboutFragment().apply {
             arguments = Bundle().apply {
                 putString(MOVIE_ID, movieId)

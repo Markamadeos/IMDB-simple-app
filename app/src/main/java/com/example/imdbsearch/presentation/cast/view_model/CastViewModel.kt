@@ -66,7 +66,7 @@ class MoviesCastViewModel(
 
 
         return MoviesCastState.Content(
-            cast.fullTitle!!,
+            fullTitle = cast.fullTitle!!,
             items = items
         )
     }

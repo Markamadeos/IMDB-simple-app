@@ -1,6 +1,6 @@
 package com.example.imdbsearch.presentation.cast.model
 
-import com.example.imdbsearch.presentation.cast.ui.MovieCastRVItem
+import com.example.imdbsearch.presentation.core.ui.RVItem
 
 sealed interface MoviesCastState {
 
@@ -8,7 +8,7 @@ sealed interface MoviesCastState {
 
     data class Content(
         val fullTitle: String,
-        val items: List<MovieCastRVItem>
+        val items: List<RVItem>
     ) : MoviesCastState
 
     data class Error(

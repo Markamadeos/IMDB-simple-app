@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.imdbsearch.databinding.ActivityCastBinding
 import com.example.imdbsearch.presentation.cast.model.MoviesCastState
 import com.example.imdbsearch.presentation.cast.view_model.MoviesCastViewModel
+import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -20,7 +21,10 @@ class MoviesCastActivity : AppCompatActivity() {
     }
 
     // Добавили адаптер для RecyclerView
-    private val adapter = MoviesCastAdapter()
+    private val adapter = ListDelegationAdapter(
+        movieCastHeaderDelegate(),
+        movieCastPersonDelegate(),
+    )
 
     private lateinit var binding: ActivityCastBinding
 

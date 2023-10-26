@@ -1,6 +1,6 @@
 package com.example.imdbsearch.presentation.cast.model
 
-import com.example.imdbsearch.presentation.core.ui.RVItem
+import com.example.imdbsearch.core.ui.RVItem
 
 sealed interface MoviesCastState {
 

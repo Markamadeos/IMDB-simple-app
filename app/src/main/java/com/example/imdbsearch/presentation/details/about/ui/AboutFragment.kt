@@ -7,15 +7,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.imdbsearch.R
+import com.example.imdbsearch.core.navigation.api.Router
 import com.example.imdbsearch.databinding.FragmentAboutBinding
 import com.example.imdbsearch.domain.models.MovieDetails
 import com.example.imdbsearch.presentation.cast.ui.MoviesCastFragment
 import com.example.imdbsearch.presentation.details.about.model.AboutState
 import com.example.imdbsearch.presentation.details.about.view_model.AboutViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class AboutFragment : Fragment() {
+
+    private val router : Router by inject()
 
     private val aboutViewModel: AboutViewModel by viewModel {
         parametersOf(requireArguments().getString(MOVIE_ID))
@@ -47,16 +51,11 @@ class AboutFragment : Fragment() {
     private fun setupButton() {
         binding.btnShowCast.setOnClickListener {
             // Осуществляем навигацию
-            parentFragment?.parentFragmentManager?.commit {
-                replace(
-                    R.id.rootFragmentContainerView,
-                    MoviesCastFragment.newInstance(
-                        movieId = requireArguments().getString(MOVIE_ID).orEmpty()
-                    ),
-                    MoviesCastFragment.TAG
+            router.openFragment(
+                MoviesCastFragment.newInstance(
+                    movieId = requireArguments().getString(MOVIE_ID).orEmpty()
                 )
-                addToBackStack(MoviesCastFragment.TAG)
-            }
+            )
         }
     }
 

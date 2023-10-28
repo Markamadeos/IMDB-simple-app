@@ -16,7 +16,7 @@ class DetailsViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifec
 
     override fun createFragment(position: Int): Fragment {
         return when(position) {
-            0 -> PosterFragment.newInstance(posterUrl)
+            0 -> PosterFragment.newInstance(posterUrl =  posterUrl)
             else -> AboutFragment.newInstance(movieId)
         }
     }

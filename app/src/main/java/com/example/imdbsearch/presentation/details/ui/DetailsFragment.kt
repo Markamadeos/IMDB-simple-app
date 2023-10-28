@@ -16,7 +16,11 @@ class DetailsFragment : Fragment() {
     private lateinit var binding: FragmentDetailsBinding
     private lateinit var tabsMediator: TabLayoutMediator
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -56,15 +60,8 @@ class DetailsFragment : Fragment() {
         // Тег для использования во FragmentManager
         const val TAG = "DetailsFragment"
 
-        fun newInstance(movieId: String, posterUrl: String): Fragment {
-            return DetailsFragment().apply {
-                // Пробрасываем аргументы в Bundle
-                arguments = bundleOf(
-                    ARGS_MOVIE_ID to movieId,
-                    ARGS_POSTER_URL to posterUrl
-                )
-            }
-        }
+        fun createArgs(movieId: String, posterUrl: String): Bundle =
+            bundleOf(ARGS_MOVIE_ID to movieId, ARGS_POSTER_URL to posterUrl)
 
     }
 

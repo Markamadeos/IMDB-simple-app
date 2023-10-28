@@ -13,18 +13,16 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.imdbsearch.R
-import com.example.imdbsearch.core.navigation.api.Router
 import com.example.imdbsearch.databinding.FragmentMoviesBinding
 import com.example.imdbsearch.domain.models.Movie
-import com.example.imdbsearch.presentation.details.ui.DetailsFragment
+import com.example.imdbsearch.presentation.details.ui.DetailsFragment.Companion.createArgs
 import com.example.imdbsearch.presentation.movies.MovieAdapter
 import com.example.imdbsearch.presentation.movies.model.MoviesState
 import com.example.imdbsearch.presentation.movies.view_model.MoviesSearchViewModel
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MoviesFragment : Fragment() {
@@ -34,12 +32,9 @@ class MoviesFragment : Fragment() {
         object : MovieAdapter.MovieClickListener {
             override fun onMovieClick(movie: Movie) {
                 if (clickDebounce()) {
-                    // Переходим на следующий экран с помощью Router
-                    router.openFragment(
-                        DetailsFragment.newInstance(
-                            movieId = movie.id,
-                            posterUrl = movie.image
-                        )
+                    findNavController().navigate(
+                        R.id.action_moviesFragment_to_detailsFragment2,
+                        createArgs(movieId = movie.id, posterUrl = movie.image)
                     )
 
                 }
@@ -62,8 +57,6 @@ class MoviesFragment : Fragment() {
     private lateinit var moviesList: RecyclerView
     private lateinit var progressBar: ProgressBar
     private lateinit var textWatcher: TextWatcher
-
-    private val router: Router by inject()
 
     private var isClickAllowed = true
 

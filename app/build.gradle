@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace 'com.example.imdbsearch'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.imdbsearch"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -59,4 +59,8 @@ dependencies {
     implementation "io.insert-koin:koin-android:3.3.0"
     implementation "com.hannesdorfmann:adapterdelegates4-kotlin-dsl:$adapterDelegateVersion"
     implementation "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:$adapterDelegateVersion"
+
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.4'
+    implementation "androidx.navigation:navigation-ui-ktx:2.7.4"
+    implementation "androidx.fragment:fragment-ktx:1.6.1"
 }

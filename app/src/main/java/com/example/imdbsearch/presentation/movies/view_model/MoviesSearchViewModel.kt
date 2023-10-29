@@ -12,7 +12,7 @@ import com.example.imdbsearch.R
 import com.example.imdbsearch.domain.api.MoviesInteractor
 import com.example.imdbsearch.domain.models.Movie
 import com.example.imdbsearch.presentation.movies.model.MoviesState
-import com.example.imdbsearch.presentation.movies.model.SingleLiveEvent
+import com.example.imdbsearch.presentation.SingleLiveEvent
 
 class MoviesSearchViewModel(
     private val moviesInteractor: MoviesInteractor,

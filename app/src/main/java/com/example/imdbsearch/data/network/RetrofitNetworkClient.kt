@@ -8,6 +8,7 @@ import com.example.imdbsearch.data.dto.movie.MoviesSearchRequest
 import com.example.imdbsearch.data.dto.Response
 import com.example.imdbsearch.data.dto.cast.MovieCastRequest
 import com.example.imdbsearch.data.dto.detail.MovieDetailsRequest
+import com.example.imdbsearch.data.dto.person.NamesSearchRequest
 import java.net.HttpURLConnection
 
 class RetrofitNetworkClient(private val imdbService: IMDbApiService, private val context: Context) :
@@ -17,13 +18,18 @@ class RetrofitNetworkClient(private val imdbService: IMDbApiService, private val
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
-        if ((dto !is MoviesSearchRequest) && (dto !is MovieDetailsRequest) && (dto !is MovieCastRequest)) {
+        if ((dto !is MoviesSearchRequest)
+            && (dto !is MovieDetailsRequest)
+            && (dto !is MovieCastRequest)
+            && (dto !is NamesSearchRequest)
+        ) {
             return Response().apply { resultCode = HttpURLConnection.HTTP_BAD_REQUEST }
         }
 
         val response = when (dto) {
             is MoviesSearchRequest -> imdbService.searchMovies(dto.expression).execute()
             is MovieDetailsRequest -> imdbService.getMovieDetails(dto.movieId).execute()
+            is NamesSearchRequest -> imdbService.searchNames(dto.expression).execute()
             else -> imdbService.getMovieCast((dto as MovieCastRequest).movieId).execute()
         }
 

@@ -1,4 +1,4 @@
-package com.example.imdbsearch.presentation.movies
+package com.example.imdbsearch.ui.movies
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.imdbsearch.R
 import com.example.imdbsearch.domain.models.Movie
-import com.example.imdbsearch.presentation.movies.MovieAdapter
+import com.example.imdbsearch.ui.movies.MovieAdapter
 
 class MovieViewHolder(
     parent: ViewGroup,

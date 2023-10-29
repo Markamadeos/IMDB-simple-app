@@ -1,4 +1,4 @@
-package com.example.imdbsearch.presentation.movies.ui
+package com.example.imdbsearch.ui.movies
 
 import android.os.Bundle
 import android.os.Handler
@@ -19,8 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.imdbsearch.R
 import com.example.imdbsearch.databinding.FragmentMoviesBinding
 import com.example.imdbsearch.domain.models.Movie
-import com.example.imdbsearch.presentation.details.ui.DetailsFragment.Companion.createArgs
-import com.example.imdbsearch.presentation.movies.MovieAdapter
+import com.example.imdbsearch.ui.details.DetailsFragment.Companion.createArgs
 import com.example.imdbsearch.presentation.movies.model.MoviesState
 import com.example.imdbsearch.presentation.movies.view_model.MoviesSearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel

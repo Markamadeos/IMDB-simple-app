@@ -1,14 +1,13 @@
-package com.example.imdbsearch.presentation.details.poster.ui
+package com.example.imdbsearch.ui.details.poster
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.imdbsearch.databinding.FragmentPosterBinding
-import com.example.imdbsearch.presentation.details.poster.PosterViewModel
+import com.example.imdbsearch.presentation.details.poster.view_model.PosterViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.imdbsearch.domain.api.MoviesInteractor
 import com.example.imdbsearch.domain.models.MovieCast
 import com.example.imdbsearch.presentation.cast.model.MoviesCastState
-import com.example.imdbsearch.presentation.cast.ui.MovieCastRVItem
+import com.example.imdbsearch.ui.cast.MovieCastRVItem
 
 // В конструктор пробросили необходимые для запроса параметры
 class MoviesCastViewModel(

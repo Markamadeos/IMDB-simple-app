@@ -1,4 +1,4 @@
-package com.example.imdbsearch.presentation.details.about.ui
+package com.example.imdbsearch.ui.details.about
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.imdbsearch.R
 import com.example.imdbsearch.databinding.FragmentAboutBinding
 import com.example.imdbsearch.domain.models.MovieDetails
-import com.example.imdbsearch.presentation.cast.ui.MoviesCastFragment
+import com.example.imdbsearch.ui.cast.MoviesCastFragment
 import com.example.imdbsearch.presentation.details.about.model.AboutState
 import com.example.imdbsearch.presentation.details.about.view_model.AboutViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel

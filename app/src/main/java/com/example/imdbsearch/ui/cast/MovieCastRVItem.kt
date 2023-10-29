@@ -1,4 +1,4 @@
-package com.example.imdbsearch.presentation.cast.ui
+package com.example.imdbsearch.ui.cast
 
 import com.example.imdbsearch.domain.models.MovieCastPerson
 import com.example.imdbsearch.core.ui.RVItem

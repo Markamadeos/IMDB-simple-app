@@ -1,4 +1,4 @@
-package com.example.imdbsearch.presentation.cast.ui
+package com.example.imdbsearch.ui.cast
 
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide

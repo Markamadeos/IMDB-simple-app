@@ -1,4 +1,4 @@
-package com.example.imdbsearch.presentation.root
+package com.example.imdbsearch.ui.root
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

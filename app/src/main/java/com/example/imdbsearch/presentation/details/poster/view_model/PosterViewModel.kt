@@ -1,4 +1,4 @@
-package com.example.imdbsearch.presentation.details.poster
+package com.example.imdbsearch.presentation.details.poster.view_model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

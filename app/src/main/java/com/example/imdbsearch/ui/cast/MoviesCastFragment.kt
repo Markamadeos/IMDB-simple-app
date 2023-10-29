@@ -1,4 +1,4 @@
-package com.example.imdbsearch.presentation.cast.ui
+package com.example.imdbsearch.ui.cast
 
 import android.os.Bundle
 import android.view.LayoutInflater

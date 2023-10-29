@@ -1,11 +1,11 @@
-package com.example.imdbsearch.presentation.details
+package com.example.imdbsearch.ui.details
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.imdbsearch.presentation.details.about.ui.AboutFragment
-import com.example.imdbsearch.presentation.details.poster.ui.PosterFragment
+import com.example.imdbsearch.ui.details.about.AboutFragment
+import com.example.imdbsearch.ui.details.poster.PosterFragment
 
 class DetailsViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle,
                               private val posterUrl: String, private val movieId: String) : FragmentStateAdapter(fragmentManager, lifecycle) {

@@ -1,4 +1,4 @@
-package com.example.imdbsearch.presentation.details.ui
+package com.example.imdbsearch.ui.details
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.example.imdbsearch.R
 import com.example.imdbsearch.databinding.FragmentDetailsBinding
-import com.example.imdbsearch.presentation.details.DetailsViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailsFragment : Fragment() {

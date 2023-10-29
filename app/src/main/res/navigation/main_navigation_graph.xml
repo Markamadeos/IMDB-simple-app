@@ -6,7 +6,7 @@
     app:startDestination="@id/moviesFragment">
     <fragment
         android:id="@+id/moviesFragment"
-        android:name="com.example.imdbsearch.presentation.movies.ui.MoviesFragment"
+        android:name="com.example.imdbsearch.ui.movies.MoviesFragment"
         android:label="fragment_movies"
         tools:layout="@layout/fragment_movies" >
         <action
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailsFragment2"
-        android:name="com.example.imdbsearch.presentation.details.ui.DetailsFragment"
+        android:name="com.example.imdbsearch.ui.details.DetailsFragment"
         android:label="fragment_details"
         tools:layout="@layout/fragment_details" >
         <action
@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/moviesCastFragment"
-        android:name="com.example.imdbsearch.presentation.cast.ui.MoviesCastFragment"
+        android:name="com.example.imdbsearch.ui.cast.MoviesCastFragment"
         android:label="fragment_movies_cast"
         tools:layout="@layout/fragment_movies_cast" />
 </navigation>
